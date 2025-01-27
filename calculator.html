@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JavaScript Calculator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f3f4f6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    .calculator {
+      background-color: #ffffff;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+      width: 320px;
+      padding: 20px;
+    }
+
+    .display {
+      background-color: #f9fafb;
+      border: 2px solid #e5e7eb;
+      border-radius: 8px;
+      font-size: 1.5rem;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: right;
+      padding: 0 10px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+
+    .buttons {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+
+    .button {
+      background-color: #e5e7eb;
+      border: none;
+      border-radius: 8px;
+      padding: 15px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .button:hover {
+      background-color: #d1d5db;
+    }
+
+    .button.operator {
+      background-color: #f87171;
+      color: #ffffff;
+    }
+
+    .button.operator:hover {
+      background-color: #ef4444;
+    }
+
+    .button.equals {
+      background-color: #34d399;
+      color: #ffffff;
+    }
+
+    .button.equals:hover {
+      background-color: #10b981;
+    }
+  </style>
+</head>
+<body>
+  <div class="calculator">
+    <div id="display" class="display">0</div>
+    <div class="buttons">
+      <button class="button" onclick="appendNumber('7')">7</button>
+      <button class="button" onclick="appendNumber('8')">8</button>
+      <button class="button" onclick="appendNumber('9')">9</button>
+      <button class="button operator" onclick="appendOperator('/')">÷</button>
+
+      <button class="button" onclick="appendNumber('4')">4</button>
+      <button class="button" onclick="appendNumber('5')">5</button>
+      <button class="button" onclick="appendNumber('6')">6</button>
+      <button class="button operator" onclick="appendOperator('*')">×</button>
+
+      <button class="button" onclick="appendNumber('1')">1</button>
+      <button class="button" onclick="appendNumber('2')">2</button>
+      <button class="button" onclick="appendNumber('3')">3</button>
+      <button class="button operator" onclick="appendOperator('-')">−</button>
+
+      <button class="button" onclick="appendNumber('0')">0</button>
+      <button class="button" onclick="appendDecimal()">.</button>
+      <button class="button" onclick="clearDisplay()">C</button>
+      <button class="button operator" onclick="appendOperator('+')">+</button>
+
+      <button class="button equals" style="grid-column: span 4;" onclick="calculateResult()">=</button>
+    </div>
+  </div>
+
+  <script>
+    let display = document.getElementById('display');
+    let currentInput = '';
+
+    function appendNumber(number) {
+      if (currentInput === '0' || currentInput === 'Infinity' || currentInput === 'Error') {
+        currentInput = number;
+      } else {
+        currentInput += number;
+      }
+      updateDisplay();
+    }
+
+    function appendOperator(operator) {
+      const lastChar = currentInput.slice(-1);
+      if ('+-*/'.includes(lastChar)) {
+        currentInput = currentInput.slice(0, -1) + operator;
+      } else {
+        currentInput += operator;
+      }
+      updateDisplay();
+    }
+
+    function appendDecimal() {
+      const parts = currentInput.split(/\+|-|\*|\//);
+      if (!parts[parts.length - 1].includes('.')) {
+        currentInput += '.';
+      }
+      updateDisplay();
+    }
+
+    function clearDisplay() {
+      currentInput = '0';
+      updateDisplay();
+    }
+
+    function calculateResult() {
+      try {
+        currentInput = eval(currentInput).toString();
+      } catch (e) {
+        currentInput = 'Error';
+      }
+      updateDisplay();
+    }
+
+    function updateDisplay() {
+      display.textContent = currentInput;
+    }
+
+    clearDisplay();
+  </script>
+</body>
+</html>
